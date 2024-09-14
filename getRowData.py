@@ -21,11 +21,9 @@ def getLinkSchedules(nameInstitute: str) -> dict:
             nameFile = nameFile.split()
             if ' '.join(nameFile) == ' '.join(nameInstitute) or ' '.join(nameFile[1:]) == ' '.join(nameInstitute[1:]):
                 validLink = "https://misis.ru" + linkData[9:linkData.find('" target')]
-                nameFile = ' '.join(nameFile)
                 extFile = validLink[validLink.rfind('.'):]
                 link = {
                     "url": validLink,
-                    "nameFile": nameFile,
                     "extFile": extFile
                 }
                 break

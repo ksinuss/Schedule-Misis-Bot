@@ -24,12 +24,13 @@
 
 
 # importing libraries
+import json
 import telebot
 import getRowData
 import workingData
 from creds import get_bot_token
 from config import LOGS, text_help
-from telebot.types import ReplyKeyboardMarkup
+from telebot.types import Message, ReplyKeyboardMarkup, KeyboardButton
 
 # creating a bot
 BOT_TOKEN = get_bot_token()
@@ -97,6 +98,10 @@ def choice_day(message):
                       ' и четность недели (В - вехняя, Н - нижняя)',
                      reply_markup=make_keyboard(['Пн_В', 'Вт_В', 'Ср_В', 'Чт_В', 'Пт_В', 'Сб_В',
                                                  'Пн_Н', 'Вт_Н', 'Ср_Н', 'Чт_Н', 'Пт_Н', 'Сб_Н']))
+    bot.register_next_step_handler(message)
+
+def get_schedule(message):
+    
 
 @bot.message_handler(content_types=['text'])
 def handle_text(message):
