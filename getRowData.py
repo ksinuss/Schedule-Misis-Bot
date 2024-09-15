@@ -6,7 +6,7 @@ def getLessonsResponse(link: str) -> str:
     response = response.text
     return response
 
-def getLinkSchedules(nameInstitute: str) -> dict:
+def getLinkSchedule(nameInstitute: str) -> dict:
     nameInstitute = nameInstitute.split()
     response = getLessonsResponse(config.allLessonsUrl)
     grabFlag = False
@@ -60,5 +60,5 @@ def getEnglishSchedule():
 
 
 # downloadSchedule(getLessonsSchedule())
-link = getLinkSchedules(config.queueLessons['nameFile'])
-print(link)
+# link = getLinkSchedule(config.queueLessons['nameFile'])
+# print(link)

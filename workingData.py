@@ -1,4 +1,7 @@
+import config
 import pandas as pd
+from datetime import datetime
+from getRowData import getLinkSchedule
             
 def getSpecifiedLessonInfo(filePath: str, nameSheet: str, 
                   nameGroup: str, numSubgroup: int,
@@ -6,10 +9,10 @@ def getSpecifiedLessonInfo(filePath: str, nameSheet: str,
     schedule = pd.read_excel(filePath, sheet_name = nameSheet, header=None, skiprows=0)
     columnIndex = schedule.columns[schedule.isin([nameGroup]).any()]
     columnIndex = int(columnIndex.values[0])
-    lessonInfo = schedule.iloc[2 + (numDay - 1) * 14 + numWeek + (numLesson - 1) * 2, 
+    lessonInfo = schedule.iloc[2 + numDay * 14 + numWeek + (numLesson - 1) * 2, 
                                columnIndex + (numSubgroup - 1) * 2:columnIndex + 2 + (numSubgroup - 1) * 2]
     try:
-        nameLesson, nameTeacher = lessonInfo.values[0].split('\n')
+        nameLesson, nameTeacher = lessonInfo.values[0].split('\n') # !!!!!!!!!!!!!!! иностранный язык - преподавателя нет, отработать исключение и реализовать получение информации об уроке английского
         numAudience = lessonInfo.values[1]
         return {
             "nameLesson": nameLesson,
@@ -42,3 +45,18 @@ def getEnglishLessonInfo(filePath: str, fullName: tuple, nameGroup: str, searchH
     except TypeError:
         return "Студент не найден в указанных списках."
     # result = schedule.loc[schedule["ФИО"] == 'Костионова Ксения Ивановна']
+
+def infoProcessing():
+    filePath = getLinkSchedule(config.queueLessons['nameFile'])["url"]
+    numDay = datetime.today().weekday() - 6
+    for numLesson in range(config.system_data["countLessons"]):
+        dayInfo = getSpecifiedLessonInfo(filePath=filePath, nameSheet=config.queueLessons["nameSheet"],
+                                         nameGroup=config.queueLessons["nameGroup"], numSubgroup=config.queueLessons["numSubgroup"],
+                                         numDay=numDay, numWeek=config.system_data["numCurWeek"], numLesson=numLesson + 1)
+        print(numLesson + 1, '\n', dayInfo)
+        print()
+
+def getDaySchedule():
+    pass
+
+infoProcessing()

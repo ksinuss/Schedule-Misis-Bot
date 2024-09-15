@@ -18,14 +18,25 @@ text_help = """Список доступных команд:
 
 system_data = {
     "lastUpdate": None,
-    "numWeek": 0,
-
+    "numCurWeek": 0,
+    "countLessons": 7
 }
 
-accordTranscript = {
-    "Пн": ("Понедельник", 1),
-    "В": ("Верхняя", 0)
-}
+accordTranscript = {}
+listAbbrevWeekDays = ["Пн", "Вт", "Ср"]
+listFullWeekDays = ["Понедельник", "Вторник", "Среда"]
+for nE in range(len(listAbbrevWeekDays)):
+    accordTranscript[listAbbrevWeekDays[nE]] = {
+        "fullWord": listFullWeekDays[nE],
+        "numEquivalent": nE
+    }
+listAbbrevParityWeek = ["В"]
+listFullParityWeek = ["Верхняя"]
+for nE in range(len(listAbbrevParityWeek)):
+    accordTranscript[listAbbrevParityWeek[nE]] = {
+        "fullWord": listFullParityWeek[nE],
+        "numEquivalent": nE
+    }
 
 # queueLessons = {
 #         "nameFile": "Институт компьютерных наук.xlsx",
@@ -65,4 +76,4 @@ exportFormatEnglish = "xlsx"
 spreadsheetIdEnglish = INMspreadsheetIdEnglish
 sheetIdEnglish = INMsheetIdEnglish
 lessonEnglishUrl = f'https://docs.google.com/spreadsheets/d/{spreadsheetIdEnglish}/export?format={exportFormatEnglish}&id={spreadsheetIdEnglish}&gid={sheetIdEnglish}'
-print(lessonEnglishUrl)
+# print(lessonEnglishUrl)
