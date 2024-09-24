@@ -38,32 +38,32 @@ for nE in range(len(listAbbrevParityWeek)):
         "numEquivalent": nE
     }
 
-# queueLessons = {
-#         "nameFile": "Институт компьютерных наук.xlsx",
-#         "nameSheet": "1 курс",
-#         "nameGroup": "БИВТ-24-17",
-#         "numSubgroup": 2,
-#         "numDay": 3,
-#         "numWeek": 0,
-#         "numLesson": 5
-# }
 queueLessons = {
-        "nameFile": "Институт новых материалов",
-        "nameSheet": "2 курс",
-        "nameGroup": "БЭН-23-4-1",
+        "nameFile": "Институт компьютерных наук.xlsx",
+        "nameSheet": "1 курс",
+        "nameGroup": "БИВТ-24-17",
         "numSubgroup": 1,
-        "numDay": 4,
-        "numWeek": 1,
-        "numLesson": 2
+        "numDay": 2,
+        "numWeek": 0,
+        "numLesson": 5
 }
-# queueEnglish = {
-#     "lessonSchedule": "ИКН_4 пара ПН-СР",
-#     "studentSurname": "Костионова",
-#     "studentName": "Ксения",
-#     "studentMiddlename": " ",
-#     "nameGroup": "БИВТ-24-17",
-#     "searchHeaders": ("Языковая группа", "Модуль", "Преподаватель", "Аудитории")
+# queueLessons = {
+#         "nameFile": "Институт новых материалов",
+#         "nameSheet": "2 курс",
+#         "nameGroup": "БЭН-23-4-1",
+#         "numSubgroup": 1,
+#         "numDay": 4,
+#         "numWeek": 1,
+#         "numLesson": 2
 # }
+queueEnglish = {
+    "lessonSchedule": "ИКН_4 пара ПН-СР",
+    "studentSurname": "Костионова",
+    "studentName": "Ксения",
+    "studentMiddlename": " ",
+    "nameGroup": "БИВТ-24-17",
+    "searchHeaders": ("Языковая группа", "Модуль", "Преподаватель", "Аудитории")
+}
 
 
 allLessonsUrl = "https://misis.ru/students/schedule/"

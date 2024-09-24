@@ -12,7 +12,16 @@ def getSpecifiedLessonInfo(filePath: str, nameSheet: str,
     lessonInfo = schedule.iloc[2 + numDay * 14 + numWeek + (numLesson - 1) * 2, 
                                columnIndex + (numSubgroup - 1) * 2:columnIndex + 2 + (numSubgroup - 1) * 2]
     try:
-        nameLesson, nameTeacher = lessonInfo.values[0].split('\n') # !!!!!!!!!!!!!!! иностранный язык - преподавателя нет, отработать исключение и реализовать получение информации об уроке английского
+        nameLesson, nameTeacher = None, None
+        print(lessonInfo.values[0])
+        if "Иностранный язык" in lessonInfo.values[0]:
+            nameLesson = getEnglishLessonInfo(config.queueEnglish["lessonShedule"],
+                                 (config.queueEnglish["studentSurname"], config.queueEnglish["studentName"], config.queueEnglish["studentMiddlename"]),
+                                 config.queueEnglish["nameGroup"],
+                                 config.queueEnglish["searchHeaders"])
+        else:
+            nameLesson, nameTeacher = lessonInfo.values[0].split('\n') # !!!!!!!!!!! иностранный язык - преподавателя нет, отработать исключение и реализовать получение информации об уроке английского
+        print(nameLesson, nameTeacher)
         numAudience = lessonInfo.values[1]
         return {
             "nameLesson": nameLesson,
@@ -47,8 +56,10 @@ def getEnglishLessonInfo(filePath: str, fullName: tuple, nameGroup: str, searchH
     # result = schedule.loc[schedule["ФИО"] == 'Костионова Ксения Ивановна']
 
 def infoProcessing():
-    filePath = getLinkSchedule(config.queueLessons['nameFile'])["url"]
-    numDay = datetime.today().weekday() - 6
+    # filePath = getLinkSchedule(config.queueLessons['nameFile'])["url"]
+    # numDay = datetime.today().weekday() - 6
+    numDay = config.queueLessons["numDay"]
+    filePath = config.queueLessons["nameFile"]
     for numLesson in range(config.system_data["countLessons"]):
         dayInfo = getSpecifiedLessonInfo(filePath=filePath, nameSheet=config.queueLessons["nameSheet"],
                                          nameGroup=config.queueLessons["nameGroup"], numSubgroup=config.queueLessons["numSubgroup"],
