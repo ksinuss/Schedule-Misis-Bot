@@ -50,15 +50,20 @@ def getTimeUpdate() -> str:
     time = response[startTime:startTime + 10]
     return time
 
-def getEnglishSchedule():
-    linkEnglishSchedule = [{
-        "url": config.lessonEnglishUrl,
-        "nameFile": "Расписание кабинетов - Английский язык",
-        "extFile": ".xlsx"
-    }]
-    return linkEnglishSchedule
+def getLinkEnglishSchedule(nameSheet = ''):
+    response = getLessonsResponse(config.lessonEnglishUrl)
+    response = response[response.find("topsnapshot"):response.rfind("Europe/Moscow")]
+    listSheetsId = [i for i in range(len(response)) if response.startswith('"[', i)]
+    # print(response)
+    # print(listSheetsId)
+    for sheetId in listSheetsId:
+        grabId = response[sheetId:]
+        grabId = grabId[:grabId.find('"]')]
+        # print(grabId)
+        if 'null' not in grabId and nameSheet in grabId:
+            rightSheetId = grabId[grabId.find('\\"') + 2:]
+            rightSheetId = rightSheetId[:rightSheetId.find('\\"')]
+            return rightSheetId
+    return None
 
-
-# downloadSchedule(getLessonsSchedule())
-# link = getLinkSchedule(config.queueLessons['nameFile'])
-# print(link)
+# getLinkEnglishSchedule(config.queueEnglish["lessonSchedule"])

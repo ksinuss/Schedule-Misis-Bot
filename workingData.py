@@ -1,7 +1,7 @@
 import config
 import pandas as pd
 from datetime import datetime
-from getRowData import getLinkSchedule
+from getRowData import getLinkSchedule, getLinkEnglishSchedule
             
 def getSpecifiedLessonInfo(filePath: str, nameSheet: str, 
                   nameGroup: str, numSubgroup: int,
@@ -13,22 +13,21 @@ def getSpecifiedLessonInfo(filePath: str, nameSheet: str,
                                columnIndex + (numSubgroup - 1) * 2:columnIndex + 2 + (numSubgroup - 1) * 2]
     try:
         nameLesson, nameTeacher = None, None
-        print(lessonInfo.values[0])
         if "Иностранный язык" in lessonInfo.values[0]:
-            nameLesson = getEnglishLessonInfo(config.queueEnglish["lessonShedule"],
+            filePath = getLinkEnglishSchedule(config.queueEnglish["lessonSchedule"])
+            nameLesson = getEnglishLessonInfo(filePath,
                                  (config.queueEnglish["studentSurname"], config.queueEnglish["studentName"], config.queueEnglish["studentMiddlename"]),
                                  config.queueEnglish["nameGroup"],
                                  config.queueEnglish["searchHeaders"])
         else:
-            nameLesson, nameTeacher = lessonInfo.values[0].split('\n') # !!!!!!!!!!! иностранный язык - преподавателя нет, отработать исключение и реализовать получение информации об уроке английского
-        print(nameLesson, nameTeacher)
+            nameLesson, nameTeacher = lessonInfo.values[0].split('\n')
         numAudience = lessonInfo.values[1]
         return {
             "nameLesson": nameLesson,
             "nameTeacher": nameTeacher,
             "numAudience": numAudience
         }
-    except AttributeError:
+    except TypeError:
         return "Пары нет."
     
 def getEnglishLessonInfo(filePath: str, fullName: tuple, nameGroup: str, searchHeaders: tuple, nameSheet = 0):
@@ -53,21 +52,19 @@ def getEnglishLessonInfo(filePath: str, fullName: tuple, nameGroup: str, searchH
         return resultInfo
     except TypeError:
         return "Студент не найден в указанных списках."
-    # result = schedule.loc[schedule["ФИО"] == 'Костионова Ксения Ивановна']
 
-def infoProcessing():
-    # filePath = getLinkSchedule(config.queueLessons['nameFile'])["url"]
+def infoProcessing(numDay):
     # numDay = datetime.today().weekday() - 6
-    numDay = config.queueLessons["numDay"]
-    filePath = config.queueLessons["nameFile"]
+    filePath = getLinkSchedule(config.queueLessons["nameFile"])["url"]
+    numWeek = config.queueLessons["numWeek"]
     for numLesson in range(config.system_data["countLessons"]):
         dayInfo = getSpecifiedLessonInfo(filePath=filePath, nameSheet=config.queueLessons["nameSheet"],
                                          nameGroup=config.queueLessons["nameGroup"], numSubgroup=config.queueLessons["numSubgroup"],
-                                         numDay=numDay, numWeek=config.system_data["numCurWeek"], numLesson=numLesson + 1)
+                                         numDay=numDay, numWeek=numWeek, numLesson=numLesson + 1)
         print(numLesson + 1, '\n', dayInfo)
         print()
 
-def getDaySchedule():
-    pass
+def getDaySchedule(numDay = datetime.today().weekday() - 6):
+    infoProcessing(numDay)
 
-infoProcessing()
+getDaySchedule(0)

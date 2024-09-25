@@ -39,12 +39,12 @@ for nE in range(len(listAbbrevParityWeek)):
     }
 
 queueLessons = {
-        "nameFile": "Институт компьютерных наук.xlsx",
+        "nameFile": "Институт компьютерных наук",
         "nameSheet": "1 курс",
         "nameGroup": "БИВТ-24-17",
         "numSubgroup": 1,
         "numDay": 2,
-        "numWeek": 0,
+        "numWeek": 1,
         "numLesson": 5
 }
 # queueLessons = {
@@ -73,7 +73,10 @@ INMspreadsheetIdEnglish = "1d7d4l-fT2nku8cfloqyMlzw0r_i0j0rnN-zEeKYwF78"
 IKNsheetIdEnglish = "1839462526"
 INMsheetIdEnglish = "1839462526"
 exportFormatEnglish = "xlsx"
-spreadsheetIdEnglish = INMspreadsheetIdEnglish
-sheetIdEnglish = INMsheetIdEnglish
+spreadsheetIdEnglish = IKNspreadsheetIdEnglish
+sheetIdEnglish = IKNsheetIdEnglish
 lessonEnglishUrl = f'https://docs.google.com/spreadsheets/d/{spreadsheetIdEnglish}/export?format={exportFormatEnglish}&id={spreadsheetIdEnglish}&gid={sheetIdEnglish}'
+lessonEnglishUrl = f'https://docs.google.com/spreadsheets/d/{spreadsheetIdEnglish}/edit?gid={sheetIdEnglish}#gid={sheetIdEnglish}'
+lessonEnglishUrl = f'https://docs.google.com/spreadsheets/d/{spreadsheetIdEnglish}'
+
 # print(lessonEnglishUrl)
