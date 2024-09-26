@@ -1,4 +1,4 @@
-import config
+from config import system_data, queueLessons, queueEnglish
 import pandas as pd
 from datetime import datetime
 from getRowData import getLinkSchedule, getLinkEnglishSchedule
@@ -14,11 +14,12 @@ def getSpecifiedLessonInfo(filePath: str, nameSheet: str,
     try:
         nameLesson, nameTeacher = None, None
         if "Иностранный язык" in lessonInfo.values[0]:
-            filePath = getLinkEnglishSchedule(config.queueEnglish["lessonSchedule"])
+            filePath = getLinkEnglishSchedule(headersSheet = queueEnglish["lessonSchedule"])
+            print(filePath)
             nameLesson = getEnglishLessonInfo(filePath,
-                                 (config.queueEnglish["studentSurname"], config.queueEnglish["studentName"], config.queueEnglish["studentMiddlename"]),
-                                 config.queueEnglish["nameGroup"],
-                                 config.queueEnglish["searchHeaders"])
+                                 (queueEnglish["studentSurname"], queueEnglish["studentName"], queueEnglish["studentMiddlename"]),
+                                 queueEnglish["nameGroup"],
+                                 queueEnglish["searchHeaders"])
         else:
             nameLesson, nameTeacher = lessonInfo.values[0].split('\n')
         numAudience = lessonInfo.values[1]
@@ -55,11 +56,11 @@ def getEnglishLessonInfo(filePath: str, fullName: tuple, nameGroup: str, searchH
 
 def infoProcessing(numDay):
     # numDay = datetime.today().weekday() - 6
-    filePath = getLinkSchedule(config.queueLessons["nameFile"])["url"]
-    numWeek = config.queueLessons["numWeek"]
-    for numLesson in range(config.system_data["countLessons"]):
-        dayInfo = getSpecifiedLessonInfo(filePath=filePath, nameSheet=config.queueLessons["nameSheet"],
-                                         nameGroup=config.queueLessons["nameGroup"], numSubgroup=config.queueLessons["numSubgroup"],
+    filePath = getLinkSchedule(queueLessons["nameFile"])["url"]
+    numWeek = queueLessons["numWeek"]
+    for numLesson in range(system_data["countLessons"]):
+        dayInfo = getSpecifiedLessonInfo(filePath=filePath, nameSheet=queueLessons["nameSheet"],
+                                         nameGroup=queueLessons["nameGroup"], numSubgroup=queueLessons["numSubgroup"],
                                          numDay=numDay, numWeek=numWeek, numLesson=numLesson + 1)
         print(numLesson + 1, '\n', dayInfo)
         print()

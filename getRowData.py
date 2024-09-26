@@ -1,5 +1,5 @@
 import requests
-import config
+from config import users_data, queueEnglish, allLessonsUrl, spreadsheetIdEnglish, allLessonsEnglishUrl, lessonEnglishUrl
 
 def getLessonsResponse(link: str) -> str:
     response = requests.get(link, verify=True)
@@ -8,7 +8,7 @@ def getLessonsResponse(link: str) -> str:
 
 def getLinkSchedule(nameInstitute: str) -> dict:
     nameInstitute = nameInstitute.split()
-    response = getLessonsResponse(config.allLessonsUrl)
+    response = getLessonsResponse(allLessonsUrl)
     grabFlag = False
     linkData = ""
     link = None
@@ -45,25 +45,32 @@ def downloadSchedule(links: list):
             print('Failed to download file')
 
 def getTimeUpdate() -> str:
-    response = getLessonsResponse(config.allLessonsUrl)
+    response = getLessonsResponse(allLessonsUrl)
     startTime = response.find('Обновление:') + 12
     time = response[startTime:startTime + 10]
     return time
 
-def getLinkEnglishSchedule(nameSheet = ''):
-    response = getLessonsResponse(config.lessonEnglishUrl)
+def getLinkEnglishSchedule(userId: int = 0, headersSheet: tuple = ('.')):
+    # try:
+    #     numCourse = users_data[userId]["numCourse"]
+    # except KeyError:
+    #     return "Неверный формат User ID."
+    numCourse = 1
+    response = getLessonsResponse(allLessonsEnglishUrl.format(spreadsheetIdEnglish = spreadsheetIdEnglish[numCourse - 1]))
     response = response[response.find("topsnapshot"):response.rfind("Europe/Moscow")]
     listSheetsId = [i for i in range(len(response)) if response.startswith('"[', i)]
     # print(response)
-    # print(listSheetsId)
     for sheetId in listSheetsId:
         grabId = response[sheetId:]
         grabId = grabId[:grabId.find('"]')]
         # print(grabId)
-        if 'null' not in grabId and nameSheet in grabId:
+        if 'null' not in grabId and all(header in grabId for header in headersSheet):
             rightSheetId = grabId[grabId.find('\\"') + 2:]
             rightSheetId = rightSheetId[:rightSheetId.find('\\"')]
-            return rightSheetId
+            return lessonEnglishUrl.format(spreadsheetIdEnglish = spreadsheetIdEnglish[numCourse - 1],
+                                           sheetIdEnglish = rightSheetId)
     return None
 
-# getLinkEnglishSchedule(config.queueEnglish["lessonSchedule"])
+# res = getLinkEnglishSchedule(headersSheet = queueEnglish["lessonSchedule"])
+# res = getLinkEnglishSchedule()
+# print(res)

@@ -21,17 +21,18 @@ system_data = {
     "numCurWeek": 0,
     "countLessons": 7
 }
+users_data = {}
 
 accordTranscript = {}
-listAbbrevWeekDays = ["Пн", "Вт", "Ср"]
-listFullWeekDays = ["Понедельник", "Вторник", "Среда"]
+listAbbrevWeekDays = ["Пн", "Вт", "Ср", "Чт", "Пт"]
+listFullWeekDays = ["Понедельник", "Вторник", "Среда", "Четверг", "Пятница"]
 for nE in range(len(listAbbrevWeekDays)):
     accordTranscript[listAbbrevWeekDays[nE]] = {
         "fullWord": listFullWeekDays[nE],
         "numEquivalent": nE
     }
-listAbbrevParityWeek = ["В"]
-listFullParityWeek = ["Верхняя"]
+listAbbrevParityWeek = ["В", "Н"]
+listFullParityWeek = ["Верхняя", "Нижняя"]
 for nE in range(len(listAbbrevParityWeek)):
     accordTranscript[listAbbrevParityWeek[nE]] = {
         "fullWord": listFullParityWeek[nE],
@@ -57,7 +58,7 @@ queueLessons = {
 #         "numLesson": 2
 # }
 queueEnglish = {
-    "lessonSchedule": "ИКН_4 пара ПН-СР",
+    "lessonSchedule": ("ИКН", "4 пара", "ПН", "СР"),
     "studentSurname": "Костионова",
     "studentName": "Ксения",
     "studentMiddlename": " ",
@@ -65,18 +66,19 @@ queueEnglish = {
     "searchHeaders": ("Языковая группа", "Модуль", "Преподаватель", "Аудитории")
 }
 
-
 allLessonsUrl = "https://misis.ru/students/schedule/"
 
-IKNspreadsheetIdEnglish = "10_ivi43URnuQ3WdRR-47jgc4HSko3zRi2-_wBQ5KC_4"
-INMspreadsheetIdEnglish = "1d7d4l-fT2nku8cfloqyMlzw0r_i0j0rnN-zEeKYwF78"
-IKNsheetIdEnglish = "1839462526"
-INMsheetIdEnglish = "1839462526"
-exportFormatEnglish = "xlsx"
-spreadsheetIdEnglish = IKNspreadsheetIdEnglish
-sheetIdEnglish = IKNsheetIdEnglish
-lessonEnglishUrl = f'https://docs.google.com/spreadsheets/d/{spreadsheetIdEnglish}/export?format={exportFormatEnglish}&id={spreadsheetIdEnglish}&gid={sheetIdEnglish}'
-lessonEnglishUrl = f'https://docs.google.com/spreadsheets/d/{spreadsheetIdEnglish}/edit?gid={sheetIdEnglish}#gid={sheetIdEnglish}'
-lessonEnglishUrl = f'https://docs.google.com/spreadsheets/d/{spreadsheetIdEnglish}'
+spreadsheetIdEnglish = [
+    "10_ivi43URnuQ3WdRR-47jgc4HSko3zRi2-_wBQ5KC_4",
+    "1d7d4l-fT2nku8cfloqyMlzw0r_i0j0rnN-zEeKYwF78"
+]
+# FirstCourseSpreadsheetIdEnglish = "10_ivi43URnuQ3WdRR-47jgc4HSko3zRi2-_wBQ5KC_4"
+# SecondCourseSpreadsheetIdEnglish = "1d7d4l-fT2nku8cfloqyMlzw0r_i0j0rnN-zEeKYwF78"
+# exportFormatEnglish = "xlsx"
+# lessonEnglishUrl = f'https://docs.google.com/spreadsheets/d/{spreadsheetIdEnglish}/export?format={exportFormatEnglish}&id={spreadsheetIdEnglish}&gid={sheetIdEnglish}' # for downloading sheet
+allLessonsEnglishUrl = 'https://docs.google.com/spreadsheets/d/{spreadsheetIdEnglish}' # for .format with passing arguments
+# lessonEnglishUrl = 'https://docs.google.com/spreadsheets/d/{spreadsheetIdEnglish}/edit?gid={sheetIdEnglish}#gid={sheetIdEnglish}' # for .format with passing arguments
+lessonEnglishUrl = 'https://docs.google.com/spreadsheets/d/{spreadsheetIdEnglish}/edit?format=xlsx&id={spreadsheetIdEnglish}&gid={sheetIdEnglish}' # for .format with passing arguments
+
 
 # print(lessonEnglishUrl)
