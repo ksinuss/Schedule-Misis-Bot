@@ -6,8 +6,7 @@ def getLessonsResponse(link: str) -> str:
     response = response.text
     return response
 
-def getLinkSchedule(nameInstitute: str) -> str:
-    nameInstitute = nameInstitute.split()
+def getLinkSchedule(nameInstitute: str) -> dict:
     response = getLessonsResponse(allLessonsUrl)
     response = response[response.rfind("Расписание учебных занятий"):response.rfind("Обновление")]
     listInstLinks = [i for i in range(len(response)) if response.startswith('<a href="/files/', i)]
@@ -15,7 +14,8 @@ def getLinkSchedule(nameInstitute: str) -> str:
         grabLink = response[instLink:]
         grabLink = grabLink[:grabLink.find('</a></span>')]
         grabNameInst = grabLink[grabLink.find('target="_blank">'):]
-        if ''.join(nameInstitute) in ''.join(grabNameInst.split()):
+        grabNameInst = ''.join(grabNameInst.split('\xad'))
+        if nameInstitute in grabNameInst:
             link = grabLink[grabLink.find('="') + 2:]
             link = link[:link.find('" target=')]
             extFile = link[link.rfind('.'):]
@@ -67,10 +67,5 @@ def getLinkEnglishSchedule(userId: int = 0, headersSheet: tuple = ('.')):
 # res = getLinkEnglishSchedule()
 # print(res)
 
-# import time
-# start_time = time.time()
-
 # res = getLinkSchedule("Институт компьютерных наук")
 # print(res)
-
-# print("--- %s seconds ---" % (time.time() - start_time))
