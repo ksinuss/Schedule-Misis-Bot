@@ -2,7 +2,7 @@ from config import system_data, queueLessons, queueEnglish
 import pandas as pd
 from datetime import datetime
 from getRowData import getLinkSchedule, getLinkEnglishSchedule
-            
+from requests import get        
 def getSpecifiedLessonInfo(filePath: str, nameSheet: str, 
                   nameGroup: str, numSubgroup: int,
                   numDay: int, numWeek: int, numLesson: int):
@@ -12,7 +12,7 @@ def getSpecifiedLessonInfo(filePath: str, nameSheet: str,
     lessonInfo = schedule.iloc[2 + numDay * 14 + numWeek + (numLesson - 1) * 2, 
                                columnIndex + (numSubgroup - 1) * 2:columnIndex + 2 + (numSubgroup - 1) * 2]
     try:
-        nameLesson, nameTeacher = None, None
+        nameLesson, nameTeacher, numAudience = None, None, None
         if "Иностранный язык" in lessonInfo.values[0]:
             filePath = getLinkEnglishSchedule(headersSheet = queueEnglish["lessonSchedule"])
             print(filePath)
@@ -22,7 +22,7 @@ def getSpecifiedLessonInfo(filePath: str, nameSheet: str,
                                  queueEnglish["searchHeaders"])
         else:
             nameLesson, nameTeacher = lessonInfo.values[0].split('\n')
-        numAudience = lessonInfo.values[1]
+            numAudience = lessonInfo.values[1]
         return {
             "nameLesson": nameLesson,
             "nameTeacher": nameTeacher,
@@ -32,7 +32,11 @@ def getSpecifiedLessonInfo(filePath: str, nameSheet: str,
         return "Пары нет."
     
 def getEnglishLessonInfo(filePath: str, fullName: tuple, nameGroup: str, searchHeaders: tuple, nameSheet = 0):
-    schedule = pd.read_excel(filePath, sheet_name = nameSheet, skiprows = 1) # make 3 row with headers - with non-zero tables of contents
+    # response = get(filePath)
+    # df = pd.read_excel(response.content, engine='openpyxl')
+    schedule = pd.read_csv(filePath,skiprows = 1)
+    # print(df)
+    # schedule = pd.read_excel(filePath, sheet_name = nameSheet, skiprows = 1) # make 3 row with headers - with non-zero tables of contents
     resultCells = None
     for indRow in range(len(schedule)):
         studentInfo = schedule.loc[[indRow]]
@@ -41,15 +45,16 @@ def getEnglishLessonInfo(filePath: str, fullName: tuple, nameGroup: str, searchH
         try:
             if all(name in studentName for name in fullName) and nameGroup == studentGroup:
                 indRow = studentInfo.index.values[0]
-                numInGroup = studentInfo.values[0][0]
+                numInGroup = int(studentInfo.values[0][0])
                 resultCells = (indRow, numInGroup)
+                # print(resultCells)
         except TypeError:
             continue
     try:
         groupInfo = schedule.loc[[resultCells[0] - resultCells[1]]]
         resultInfo = {}
         for header in searchHeaders:
-            resultInfo[header] = groupInfo[header].values[0]
+            resultInfo[header] = groupInfo[header].values[0].replace('\n', '')
         return resultInfo
     except TypeError:
         return "Студент не найден в указанных списках."

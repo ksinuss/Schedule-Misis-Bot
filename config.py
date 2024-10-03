@@ -78,7 +78,7 @@ spreadsheetIdEnglish = [
 # lessonEnglishUrl = f'https://docs.google.com/spreadsheets/d/{spreadsheetIdEnglish}/export?format={exportFormatEnglish}&id={spreadsheetIdEnglish}&gid={sheetIdEnglish}' # for downloading sheet
 allLessonsEnglishUrl = 'https://docs.google.com/spreadsheets/d/{spreadsheetIdEnglish}' # for .format with passing arguments
 # lessonEnglishUrl = 'https://docs.google.com/spreadsheets/d/{spreadsheetIdEnglish}/edit?gid={sheetIdEnglish}#gid={sheetIdEnglish}' # for .format with passing arguments
-lessonEnglishUrl = 'https://docs.google.com/spreadsheets/d/{spreadsheetIdEnglish}/edit?format=xlsx&id={spreadsheetIdEnglish}&gid={sheetIdEnglish}' # for .format with passing arguments
-
+# lessonEnglishUrl = 'https://docs.google.com/spreadsheets/d/{spreadsheetIdEnglish}/gviz/tq?tqx=out:xlsx&sheet={sheetIdEnglish}' # for .format with passing arguments
+lessonEnglishUrl = 'https://docs.google.com/spreadsheets/d/{spreadsheetIdEnglish}/export?format=csv&id={spreadsheetIdEnglish}&gid={sheetIdEnglish}'
 
 # print(lessonEnglishUrl)
